@@ -152,7 +152,7 @@ function App() {
             </Toolbar>
           </AppBar>
           <Grid container className={styles.root}>
-            {!isLoading &&
+            {
               photos.map(({ id, server, secret }, ind) => {
                 if (photos.length === ind + 1) {
                   return (
