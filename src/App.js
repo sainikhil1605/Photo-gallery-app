@@ -55,7 +55,7 @@ function App() {
         if (entries[0].isIntersecting && !isLastPage) {
           setPageNum((prev) => prev + 1);
         }
-      });
+      },{threshold:1});
       if (node) {
         observer.current.observe(node);
       }
