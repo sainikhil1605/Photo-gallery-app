@@ -87,7 +87,11 @@ function App() {
       if (tempQuery !== '') suggestions.push(tempQuery);
     } else {
       suggestions = JSON.parse(suggestions);
-      if (suggestions.includes(tempQuery) || tempQuery === '') {
+      if (
+        suggestions.includes(tempQuery) ||
+        tempQuery === '' ||
+        tempQuery === null
+      ) {
         return;
       }
       suggestions.push(tempQuery);
@@ -130,7 +134,7 @@ function App() {
                     fetchSuggestion(false);
                   }}
                   onChange={(event, newValue) => {
-                    setQuery(newValue);
+                    handleChange(newValue);
                   }}
                   // onInputChange={(e) => handleChange(e)}
                   renderInput={(props) => (
@@ -152,61 +156,60 @@ function App() {
             </Toolbar>
           </AppBar>
           <Grid container className={styles.root}>
-            {
-              photos.map(({ id, server, secret }, ind) => {
-                if (photos.length === ind + 1) {
-                  return (
-                    <Grid
-                      item
-                      sm={6}
-                      md={4}
-                      key={ind}
-                      className="image-container"
-                      ref={lastPhotoElementRef}
+            {photos.map(({ id, server, secret }, ind) => {
+              if (photos.length === ind + 1) {
+                return (
+                  <Grid
+                    item
+                    sm={6}
+                    md={4}
+                    key={ind}
+                    className="image-container"
+                    ref={lastPhotoElementRef}
+                  >
+                    <Paper
+                      elevation={1}
+                      className="image-paper"
+                      style={{ width: 'fit-content' }}
+                      onClick={() => {
+                        setActivePhoto(ind);
+                        setOpen(true);
+                      }}
                     >
-                      <Paper
-                        elevation={1}
-                        className="image-paper"
-                        style={{ width: 'fit-content' }}
-                        onClick={() => {
-                          setActivePhoto(ind);
-                          setOpen(true);
-                        }}
-                      >
-                        <img
-                          src={`https://live.staticflickr.com/${server}/${id}_${secret}_w.jpg`}
-                          alt={` ${ind}`}
-                        />
-                      </Paper>
-                    </Grid>
-                  );
-                } else {
-                  return (
-                    <Grid
-                      item
-                      sm={6}
-                      md={4}
-                      key={ind}
-                      className="image-container"
+                      <img
+                        src={`https://live.staticflickr.com/${server}/${id}_${secret}_w.jpg`}
+                        alt={` ${ind}`}
+                      />
+                    </Paper>
+                  </Grid>
+                );
+              } else {
+                return (
+                  <Grid
+                    item
+                    sm={6}
+                    md={4}
+                    key={ind}
+                    className="image-container"
+                  >
+                    <Paper
+                      elevation={1}
+                      className="image-paper"
+                      style={{ width: 'fit-content' }}
+                      onClick={() => {
+                        setActivePhoto(ind);
+                        setOpen(true);
+                      }}
                     >
-                      <Paper
-                        elevation={1}
-                        className="image-paper"
-                        style={{ width: 'fit-content' }}
-                        onClick={() => {
-                          setActivePhoto(ind);
-                          setOpen(true);
-                        }}
-                      >
-                        <img
-                          src={`https://live.staticflickr.com/${server}/${id}_${secret}_w.jpg`}
-                          alt={` ${ind} image`}
-                        />
-                      </Paper>
-                    </Grid>
-                  );
-                }
-              })}
+                      <img
+                        src={`https://live.staticflickr.com/${server}/${id}_${secret}_w.jpg`}
+                        alt={` ${ind} image`}
+                      />
+                    </Paper>
+                  </Grid>
+                );
+              }
+            })}
           </Grid>
           {photos.length === 0 && !isLoading && (
             <div className={styles.loading}>No Photos found</div>
